@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Potanet{% endblock %}
+
+{% block body %}
+<div class="main_box">
+		<div class="serre_nav_box">
+			<div class="nav_box">
+					<div>{{serres|length}} Serre</div>
+					
+				
+			</div>
+		
+		
+			<div class="serre_box">
+				{% if serres %}
+
+					{% for serre in serres %}
+						<div class="serre" id="{{ serre.id }}">
+							<div class="header_box">
+							<div>
+								<h1 class="h1_box">{{ serre.nom }} </h1>
+							</div>
+								
+								<div class="btn-group" role="group" aria-label="Basic example">
+									<a href="{{ path('editSerre', {'id': serre.id} )}}" class="  btn "><i class="fas fa-edit button_edit" ></i></a>
+									<a href="{{ path('serre', {'id': serre.id}) }}" class="  btn "><i class="fas fa-search button_edit" ></i></a>
+									<a href="{{ path('SerreRapport',{'id':serre.id}) }}" class="  btn "><i class="fas fa-newspaper button_edit" ></i></a>
+									<a href="{{ path('deleteSerre', {'id': serre.id} )}}" class="  btn "><i class="fas fa-trash button_delete"></i></a>
+								</div>
+								
+							</div>
+							<p class="p_box_annotation">Crée le : <span class="bold">{{ serre.date_ToString() }} </span></p>
+							
+							
+								{% if serre.plants|length > 0 %}
+								<ul>	
+									{% for plant in serre.plants %}
+										<li>{{ plant.espece}}</li>
+										
+									{% endfor %}
+								</ul>	
+								{% else %}
+								
+									<p style="text-align:center;margin:auto">Pour crée un plant, clickez sur le bouton <span class="bold">"détail <i class="fas fa-search"></i> "</span>  de la serre</p>
+								{% endif %}
+							
+						</div>
+			
+						
+			
+					{% endfor %}
+				{% else %}
+					<div class=col-md-5 col-md-offset-5 style="margin-top:1%;">
+						<a class="button" href="{{ path('newSerre')}}" >Nouvelle Serre</a>
+					</div>
+					
+					
+				{% endif %}
+		</div>
+	</div>
+	{% embed "decorator/_panneauLateral.html.twig" %}
+	{% endembed %}
+</div>
+    
+{% endblock %}

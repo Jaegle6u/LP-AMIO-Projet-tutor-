@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Potanet | {{plant[0].espece}}{% endblock %}
+
+{% block body %}
+<div class="h-100 vw-100 row d-flex justify-content-center">
+	<div class="main_box position-relative mt-3">
+		<div class="serre_nav_box">
+			<div class="nav_box">
+				<div class="d-flex" style="align-items:center">
+					<div> 
+						<a href="{{ path('serre',{'id' : plant[0].serre.id} )}}" class="btn button_back"><i class="fas fa-arrow-left"></i></a>
+					</div>
+					<div>
+						{{plant[0].plantes|length}} Plante
+					</div>
+				</div>
+				<div>
+					{% if mesures[0] is defined %}
+						
+							<div class="p_box_annotation">
+								Mesure du {{ mesures[0].readingTime_ToString() }}
+								 T :  <span class="bold">{{ mesures[0].value1 }}C°</span>
+								| H :  <span class="bold">{{ mesures[0].value2 }}%</span>
+								| H S :  <span class="bold">{{ mesures[0].value3 }}%</span>
+							</div>
+						
+					{% else %}
+						<div class="p_box_annotation"> Aucun capteur lié a ce plant !</div>
+					{% endif %}
+				</div>
+				<div class="p_box_annotation">
+					Pour ajouter une plante ou modifier l'arrosage de {{ plant[0] }} cliquez sur le bouton <span class="bold">"Menu <i class="fas fa-bars"></i> "</span> 
+				</div>
+			</div>
+			<div class="container w-100 h-50 overflow-scroll">
+				<div class="row row-cols-5    mh-50" >
+					{% if plant[0].plantes|length > 0 %}
+						{% for plante in plant[0].plantes %}
+							<div class="col m-1" id="{{ plante.id }}" style="background-color:white;border-radius:5px;">
+								<div class="d-flex justify-content-between">
+									<div>
+										<h1 class="h1_box">{{ plante.plant.espece }} {{plante.numeros}} </h1>
+									</div>
+									<div class="btn-group" role="group" aria-label="Basic example"> 
+										<a href="{{ path('PlanteRapport',{'id':plante.id}) }}" class=" btn"><i class="fas fa-newspaper button_edit" ></i></a>
+										<a href="{{ path('deletePlante', {'id': plante.id,'id_plant': plant[0].id} )}}" class="btn"><i class="fas fa-trash button_delete "></i></a>
+									</div>
+								</div>
+								<p class="p_box_annotation">Crée le : <span class="bold">{{ plante.date_ToString() }} </span></p>
+							</div>
+						{% endfor %}
+					{% else %}
+						<div class="col-md-5 col-md-offset-5" style="margin-top:1%;">
+							<a class="button" href="{{ path('newPlante',{'id' : plant[0].id})}}" >Nouvelle Plante</a>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% embed "decorator/_panneauLateral.html.twig" %}
+		{% endembed %}
+	</div>
+	<div class="mx-2">
+		{% if mesures[0] is defined and plant[0].arrosage %}
+			
+				<span id="ID_capteur" data-IDcapteur={{ plant[0].arrosage.id }} class="text-center"></span>
+				<img id="ChartTemperature" class="rounded" src="">
+				<img id="ChartHumidite" class="rounded" src="">
+				<img id="ChartHumiditeSol" class="rounded" src="">
+				<div id="AlertGraphique" class="alert alert-danger" role="alert">
+  					Pas assez de mesure pour crée les graphiques, rechargez la pages dans 5 minutes!
+				</div>
+			
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

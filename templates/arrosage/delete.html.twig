@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    
+    <div class="delete_main_box">
+    <div class="delete_box">
+        <h1>Supprimer l'arrosage de {{ entity.plant.espece }} ?</h1>
+
+        <form action="" method="post">
+            <div class="alert alert-danger">
+                Voulez-vous vraiment supprimer cette Arrosage de {{ entity.plant.espece }}? Cette action est définitive!
+            </div>
+            <div class="form_footer">
+                <button class="button">Oui</button>
+                <br>    
+                <a href="{{ path('serre', {'id': entity.plant.serre.id}) }}" class="btn btn-danger">Non</a>
+            </div>
+
+
+            
+
+            <input type="hidden" name="token" value="{{ csrf_token('delete' ~ entity.id) }}">
+        </form>
+    </div>
+        
+    </div>
+    
+   
+    
+    
+    
+    
+{% endblock %}

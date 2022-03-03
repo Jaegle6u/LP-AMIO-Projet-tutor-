@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rapport{% endblock %}
+
+            
+        
+{% block body %}
+    <div class="main_box">
+
+		<div class="serre_box">
+            <div class="h-100 w-30 d-flex justify-content-center align-items-center " style="background-color:white;width:29.5%;border-radius: 5px;flex-direction: column;overflow:auto;">
+            
+            {% if route_name is defined %}
+                {% if route_name == "SerreRapport" %}
+                    <h1>Rapport de {{ serre[0].nom }}</h1>
+                    {% if rapports is empty %}
+                        <a href="{{ path('newSerreRapport',{'id':serre[0].id})}}" class="button">Nouveau Rapport</a>
+                    {% endif %}
+                {% elseif route_name == "PlantRapport" %}
+                    <h1>Rapport de {{ plant[0].serre.nom }} | {{ plant[0].espece }}</h1>
+                    {% if rapports is empty %}
+                        <a href="{{ path('newPlantRapport',{'id':plant[0].id})}}" class="button">Nouveau Rapport</a>
+                    {% endif %}
+                {% elseif route_name == "PlanteRapport" %}
+                    <h1>Rapport de {{ plante[0].plant.serre.nom }} | {{ plante[0].plant.espece }} | Plante {{plante[0].numeros}}</h1>
+                    {% if rapports is empty %}
+                        <a href="{{ path('newPlanteRapport',{'id':plante[0].id})}}" class="button">Nouveau Rapport</a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {# <a href="{{ path('newRapport')}}" class="button">Nouveau Rapport</a> #}
+            {% endif %}
+            
+                <div class="list_group" style="width:85%;height:90%">
+                
+                    {% for rapport in rapports %}
+                        {% if rapport.probleme %}
+                        <div><button type="button" id="rapport_{{rapport.id}}" data-id="{{rapport.id}}" class="list-group-item list-group-item-action list-group-item-danger rapport d-flex justify-content-between" style="color: #4C4C4C;"> <span class="bold">{{ rapport.objet }}</span><span class="p_box_annotation">{{ rapport.getElement() }}</span> <a href="{{ path('deleteRapport', {'id': rapport.id} )}}" class="button_delete"><i class="fas fa-trash"></i></a></button>
+                        
+                        </div>
+                        {% else %}
+                        <div><button type="button" id="rapport_{{rapport.id}}" data-id="{{rapport.id}}" class="list-group-item list-group-item-action list-group-item-primary rapport d-flex justify-content-between" style="color: #4C4C4C;"> <span class="bold">{{ rapport.objet }}</span><span class="p_box_annotation">{{ rapport.getElement() }}</span> <a href="{{ path('deleteRapport', {'id': rapport.id} )}}" class="button_delete"><i class="fas fa-trash"></i></a></button>
+                        
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    
+                      
+                   
+                </div>
+            </div>
+          
+            <div id="affichage_rapport" class="h-100 w-70 " style="background-color:white;width:68.5%;border-radius: 5px;overflow:auto;">
+            
+                    {% for rapport in rapports %}
+                    <div id="rapport_detail_{{ rapport.id }}" class="rapport_detail ">
+
+                        {# OBJET #}
+                        {% if rapport.probleme %}
+                        <h1 class="alert alert-danger" style="text-align:center;">{{rapport.objet}}</h1>
+                       
+                        {% else %}
+                         <h1 class="alert" style="text-align:center; background-color:rgb(113, 137, 122); color:white;">{{rapport.objet}}</h1>
+                        {% endif %}
+                        <div>
+                        {# ELEMENT LIE AU RAPPORT #}
+                        {% if rapport.serre is not null %}
+                            <div class="p_box_annotation">{{ rapport.serre.nom }}</div>
+                        {% elseif rapport.plant is not null %}
+                            <div class="p_box_annotation">{{ rapport.plant.serre.nom }} | {{ rapport.plant.espece }}</div>
+                        {% elseif rapport.plante is not null %}
+                            <div class="p_box_annotation">{{ rapport.plante.plant.serre.nom }} | {{ rapport.plante.plant.espece }} | Plante {{ rapport.plante.numeros }}</div>
+                        {% else %}
+                            <div class="p_box_annotation">Potanet</div>
+                        {% endif %}
+
+                        {# DATE #}
+                        <div class="p_box_annotation">Crée le {{ rapport.date_toString }}</div>
+                        </div>
+                        {# CONTENU #}
+                        <div class="contenu m-3">
+                        {% autoescape false %}
+                            {{rapport.contenu}}
+                        {% endautoescape %}
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+            </div>
+           
+        </div>
+    </div>
+   {% embed "decorator/_panneauLateral.html.twig" %}
+    {% endembed %}
+{% endblock %}

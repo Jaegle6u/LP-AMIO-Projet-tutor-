@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍀</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('front') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('front') }}
+        {% endblock %}
+        {# Ajout des differentes police d'écriture #}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Varela+Round&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&family=Varela+Round&display=swap" rel="stylesheet">
+
+        {# Ajout des différentes feuilles de styles
+	    <link rel="stylesheet" type="text/css" href="../assets/front.scss">
+        <script type="text/javascript" src="../assets/front.js"></script> #}
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+
+    {# Header du site #}
+        {% block header %}
+            <nav>
+		        <h1>
+                    {% if serre[0] is defined %}
+                      Potanet | {{ serre[0].nom }}
+                    {% elseif plant[0] is defined %}
+                        Potanet | {{plant[0].serre.nom}} | {{ plant[0].espece }}
+                    {% else %}
+                        Potanet
+                    {% endif %}
+                </h1>
+                <div>
+                
+                     <a href="{{ path('homepage' )}}" class="btn "><i class="fas fa-home bouton_nav" ></i></a>
+                     {% if not controller_name is defined or(controller_name is defined and controller_name != "RapportController") %}
+                     <a href="{{ path('rapport' )}}" class="btn "><i class="fas fa-newspaper bouton_nav" ></i></a>
+                     {% endif %}
+                     {% if controller_name is defined and ( controller_name == 'CoreController' or controller_name == 'PlantController' or controller_name =='PlanteController' or controller_name == 'RapportController') or route_name is defined %}
+                     <i class="fas fa-bars bouton_nav btn" id="btn_panneau_lateral" ></i>
+                     {% endif %}
+                </div>
+                
+
+	        </nav>
+        {% endblock %}
+
+        {% block body %}{% endblock %}
+        {% block footer %}
+            {# <footer>
+	            <p>Développer par Loïc JAEGLE 2021/2022 | 
+               
+                <a href='https://fr.freepik.com/vecteurs/fond'>Fond vecteur créé par pikisuperstar - fr.freepik.com</a>
+                </p>
+            </footer> #}
+        {% endblock %}
+    </body>
+    <!-- Modal -->
+										<div class="modal fade" id="MyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">
+                                                    ttttt
+                                                </h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												{% if controller_name is defined  %}
+                                                    {% if controller_name == "PlantController" %}
+                                                       ddddd
+                                                    {% endif %}
+                                                {% endif %}
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+												
+											</div>
+											</div>
+										</div>
+										</div>
+</html>

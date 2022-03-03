@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Potanet | {{ serre[0].nom }}{% endblock %}
+
+{% block body %}
+    <div class="main_box">
+		<div class="serre_nav_box">
+			<div class="nav_box">
+				<div class="d-flex" style="align-items:center">
+					<div> <a href="{{ path('homepage' )}}" class="btn button_back"><i class="fas fa-arrow-left"></i></a></div>
+					<div>{{serre[0].plants|length}} Plant</div>
+					
+				</div>
+					
+					
+				
+			</div>
+		
+		
+			<div class="serre_box">
+				{% if serre[0].plants|length > 0 %}
+
+					{% for plant in serre[0].plants %}
+						<div class="serre" id="{{ plant.id }}">
+							<div class="header_box">
+								<h1 class="h1_box">{{ plant.espece }} </h1>
+								<div class="btn-group" role="group" aria-label="Basic example">
+									<a href="{{ path('editPlant', {'id': plant.id} )}}" class=" btn"><i class="fas fa-edit button_edit" ></i></a>
+									<a href="{{ path('plant', {'id': plant.id} )}}" class="btn"><i class="fas fa-search button_edit" ></i></a>
+									<a href="{{ path('PlantRapport',{'id':plant.id}) }}" class=" btn"><i class="fas fa-newspaper button_edit" ></i></a>
+									<a href="{{ path('deletePlant', {'id': plant.id,'id_serre': serre[0].id} )}}" class="btn"><i class="fas fa-trash button_delete"></i></a>
+								</div>
+								
+							</div>
+							<p class="p_box_annotation">Crée le : <span class="bold">{{ plant.date_ToString() }} </span></p>
+							
+							<p style="text-align:center;margin:auto">
+							{% if plant.plantes|length > 0 %}
+									
+									
+										{{ plant.plantes|length }} plante
+										
+									
+									
+								{% else %}
+								
+									Pour crée une plante, clickez sur le bouton <span class="bold">"détail <i class="fas fa-search"></i> "</span> puis sur "Nouvelle Plante"
+								{% endif %}
+								</p>
+							<div class="header_box">
+								<h1 class="h1_box">Arrosage </h1>
+								{% if plant.arrosage %}
+								<div class="d-flex justify-content-between align-items-center">
+									<a href="{{ path('editArrosage', {'id': plant.arrosage.id} )}}" class=" button_edit"><i class="fas fa-edit" ></i></a>
+									<a href="{{ path('deleteArrosage', {'id': plant.arrosage.id} )}}" class="button_delete"><i class="fas fa-trash"></i></a>
+								</div>
+							</div>
+
+							<p class="p_box_annotation">sensorName : <span class="bold">{{ plant.arrosage.id }} </span> | sensorLocation : <span class="bold">{{ plant }} </span></p>
+
+							<ul class="list-group">
+							{% if plant.arrosage.checkTemperature %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									
+									Température min | max :
+									<div>
+									<span class="badge  rounded-pill" style="background-color:#249EEF">{{plant.arrosage.minTemperature}}</span>
+									<span class="badge bg-danger rounded-pill">{{ plant.arrosage.maxTemperature }}</span>
+									</div>
+								</li>
+							{% endif %}
+							{% if plant.arrosage.checkHumidite %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Humidité min | max :
+										<div>
+										<span class="badge  rounded-pill"style="background-color:#249EEF">{{plant.arrosage.minHumidite}}</span>
+										<span class="badge bg-danger rounded-pill">{{ plant.arrosage.maxHumidite }}</span>
+										</div>
+								</li>
+							{% endif %}
+							{% if plant.arrosage.checkHumiditeSol %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Humidité Sol min | max :
+										<div>
+										<span class="badge  rounded-pill"style="background-color:#249EEF">{{plant.arrosage.minHumiditeSol}}</span>
+										<span class="badge bg-danger rounded-pill">{{ plant.arrosage.maxHumiditeSol }}</span>
+										</div>
+								</li>
+							{% endif %}
+							{% if not (plant.arrosage.checkTemperature and plant.arrosage.checkHumidite and plant.arrosage.checkHumiditeSol)  %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Arrosage désactiver
+										
+								</li>
+							{% endif %}
+							</ul>
+								{% else %}
+									</div>
+									<div class="d-flex justify-content-center align-items-center">
+										<a class="button" href="{{ path('newArrosage',{'id' : plant.id})}}" >Ajouter Arrosage</a>
+									</div>
+								{% endif %}
+
+						</div>
+			
+						
+			
+					{% endfor %}
+				{% else %}
+					<div class=col-md-5 col-md-offset-5 style="margin-top:1%;">
+						
+						<a class="button" href="{{ path('newPlant',{'id' : serre[0].id})}}" >Nouveaux Plant</a>
+					</div>
+					
+					
+				{% endif %}
+		</div>
+	</div>
+	{% embed "decorator/_panneauLateral.html.twig" %}
+	{% endembed %}
+</div>
+
+{% endblock %} 

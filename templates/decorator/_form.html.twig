@@ -1,0 +1,57 @@
+<div class="form_container">
+    <div class="form">
+    {% if serre_edit is defined %}
+        <h1>Modifier {{ serre_edit.nom }}</h1>
+    {% elseif plant_edit is defined %}
+        <h1>Modifier plant de {{ plant_edit.espece }}</h1>
+    {% elseif arrosage_edit is defined %}
+        <h1>Modifier Arrosage de {{ arrosage_edit.plant.espece }}</h1>
+    {% else %}
+        <h1>Ajouter {{entity_name}}</h1>
+    {% endif %}
+   
+        {{ form_start(form) }} 
+
+        
+            
+            {% block formBody %}
+            
+                {{ form_widget(form) }}
+            
+                 
+            {% endblock %}
+            
+
+            
+            <div class="form_footer">
+            {% if edit is defined %}
+                 <button type="submit" class="button">Modifier</button>
+            {% else %}
+                <button type="submit" class="button">Ajouter</button>
+            {% endif %}
+                
+                <br>
+                {% if serre is defined %}
+                    <a class="btn btn-danger" href="{{ path('serre',{'id' : serre[0].id })}}" >Retour</a>
+                
+                {% elseif new_arrosage is defined %}
+                     <a class="btn btn-danger" href="{{ path('serre',{'id' : plant[0].serre.id })}}" >Retour</a>
+                {% elseif arrosage_edit is defined %}
+                     <a class="btn btn-danger" href="{{ path('serre',{'id' : arrosage_edit.plant.serre.id })}}" >Retour</a>
+                {% elseif plant is defined  %}
+                    <a class="btn btn-danger" href="{{ path('plant',{'id' : plant[0].id })}}" >Retour</a>
+                
+
+                {% else %}
+                    <a class="btn btn-danger" href="{{ path('homepage')}}" >Retour</a>
+                {% endif %}
+               
+            </div>
+               
+        
+
+
+        {{ form_end(form) }} 
+    </div>
+
+</div>

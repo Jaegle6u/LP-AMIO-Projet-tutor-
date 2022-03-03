@@ -1,0 +1,150 @@
+<div class="panneau_lateral" id="panneau_lateral">
+			<div class="d-flex justify-content-center">
+				<h1>Menu
+					{% if serre is defined and not rapports is defined %}
+						de {{ serre[0].nom }}
+					{% endif %}
+				</h1>
+			</div>
+			
+			<div class="container">
+			<div class="row  justify-content-center">
+			<div class="col justify-content-center w-100">
+				{% if serre is defined and not rapports is defined %}
+				
+						<a class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white" href="{{ path('newPlant',{'id' : serre[0].id})}}" >Nouveau Plant</a>
+					
+						
+				
+						
+				{% elseif plant is defined and controller_name is defined %}
+					{% if controller_name == "PlanteController" %}
+					<a class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white" href="{{ path('newPlante',{'id' : plant[0].id})}}" >Nouvelle Plante</a>
+						
+							
+  								<div class="d-flex mt-3 justify-content-between align-item-center">
+    								<div class=" h1 ">Arrosage</div>
+									{% if plant[0].arrosage %}
+										<div class="btn-group ml-3">
+											<a href="{{ path('editArrosage', {'id': plant[0].arrosage.id} )}}" class="btn btn-primary"><i class="fas fa-edit" style="color:#fff"></i></a>
+											<a href="{{ path('deleteArrosage', {'id': plant[0].arrosage.id} )}}" class="btn btn-danger"><i class="fas fa-trash" style="color:#fff"></i></a>
+										</div>
+								</div>
+										<p class="p_box_annotation mt-3">sensorName : <span class="bold">{{ plant[0].arrosage.id }} </span> | sensorLocation : <span class="bold">{{ plant[0] }} </span></p>
+								
+									{% else %}
+										</div>
+										<div class="d-flex justify-content-center align-items-center mt-3">
+											<a href="{{ path('newArrosage',{'id' : plant[0].id})}}" class="btn btn-primary"style="color:#fff">Ajouter Arrosage</a>
+										</div>
+									{% endif %}
+  								
+								  
+							
+							
+							
+							{% if plant[0].arrosage %}
+							<ul class="list-group">
+							{% if plant[0].arrosage.checkTemperature %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									
+									Température min | max :
+									<span class="badge  rounded-pill" style="background-color:#249EEF">{{plant[0].arrosage.minTemperature}}</span>
+									<span class="badge bg-danger rounded-pill">{{ plant[0].arrosage.maxTemperature }}</span>
+								</li>
+							{% endif %}
+							{% if plant[0].arrosage.checkHumidite %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Humidité min | max :
+										<span class="badge  rounded-pill"style="background-color:#249EEF">{{plant[0].arrosage.minHumidite}}</span>
+										<span class="badge bg-danger rounded-pill">{{ plant[0].arrosage.maxHumidite }}</span>
+									
+								</li>
+							{% endif %}
+							{% if plant[0].arrosage.checkHumiditeSol %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Humidité Sol min | max :
+										<span class="badge  rounded-pill"style="background-color:#249EEF">{{plant[0].arrosage.minHumiditeSol}}</span>
+										<span class="badge bg-danger rounded-pill">{{ plant[0].arrosage.maxHumiditeSol }}</span>
+									
+								</li>
+							{% endif %}
+							{% if not (plant[0].arrosage.checkTemperature and plant[0].arrosage.checkHumidite and plant[0].arrosage.checkHumiditeSol)  %}
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+										Arrosage désactiver
+										
+								</li>
+							{% endif %}
+							</ul>
+							
+						
+						{% endif %}
+					{% endif %}
+				{% elseif rapports is defined %}
+					{% if route_name is defined %}
+						{% if route_name == "SerreRapport" %}
+							
+							<a href="{{ path('newSerreRapport',{'id':serre[0].id})}}" class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white">Nouveau Rapport</a>
+						{% elseif route_name == "PlantRapport" %}
+							
+							<a href="{{ path('newPlantRapport',{'id':plant[0].id})}}" class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white">Nouveau Rapport</a>
+						{% elseif route_name == "PlanteRapport" %}
+							
+							<a href="{{ path('newPlanteRapport',{'id':plante[0].id})}}" class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white">Nouveau Rapport</a>
+						{% endif %}
+					{% else %}
+							<a href="{{ path('newRapport')}}" class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white">Nouveau Rapport</a>
+					{% endif %}
+					
+				
+					
+				{% else %}
+						<a class="btn btn-primary position-relative top-0 start-50 translate-middle mt-3 text-white" href="{{ path('newSerre')}}" >Nouvelle Serre</a>
+				{% endif %}
+				
+				
+			</div>
+			</div>
+			</div>
+			
+			{#
+			<div>
+			<form action="{{ path("homepage_filtre",{id : 1}) }}">
+				<button type="submit">envoyer</button>
+			</form>
+			</div>
+			
+			<div class="ordre">
+				<h2>Ordre</h2>
+				<select name="ordre" id="ordre">
+           			<option value="date">Date</option>
+           			<option value="date">Nombre de plant</option>
+           			<option value="date">Ordre alphabétique</option>
+          		</select>
+          		<div class="btn_ordre">
+          			<label for="croissant">Croissant</label><input type="radio" name="croissant" value="croissant" id="croissant" /> 
+          			<label for="décroissant">Décroissant</label><input type="radio" name="croissant" value="décroissant" id="décroissant" />
+          		</div> 
+			</div>
+			<div class="filtre">
+				<h2>Filtre</h2>
+				<label for="filtre1">Filtrer par plants</label>
+				<select name="filtre" id="filtre1">
+           			<option value="date"></option>
+           			<option value="date">Ciboulette</option>
+           			<option value="date">Coriandre</option>
+           			<option value="date">Menthe</option>
+          		</select>
+          		<label for="filtre2">Filtrer par statut</label>
+				<select name="filtre" id="filtre2">
+           			<option value="date"></option>
+           			<option value="date">Tout va bien!</option>
+           			<option value="date">Température trop élévé</option>
+           			<option value="date">Température trop basse</option>
+           			<option value="date">Réservoir vide</option>
+          		</select>
+          		<button>Réintialiser filtre</button>
+			</div>#}
+			
+		</div>
+	
